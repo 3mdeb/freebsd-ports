@@ -1,0 +1,8 @@
+--- plugins/dfu-csr/meson.build.orig	2021-02-23 14:54:50 UTC
++++ plugins/dfu-csr/meson.build
+@@ -1,4 +1,4 @@
+-if get_option('gusb')
++if get_option('gusb') and host_machine.system() == 'linux'
+ cargs = ['-DG_LOG_DOMAIN="FuPluginDfuCsr"']
+ 
+ install_data(['dfu-csr.quirk'],
