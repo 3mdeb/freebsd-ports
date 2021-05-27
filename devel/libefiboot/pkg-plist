@@ -1,0 +1,7 @@
+include/efivar/efiboot-creator.h
+include/efivar/efiboot-loadopt.h
+include/efivar/efiboot.h
+lib/libefiboot.so
+lib/libefiboot.so.0
+lib/libefiboot.so.0.24
+libdata/pkgconfig/efiboot.pc

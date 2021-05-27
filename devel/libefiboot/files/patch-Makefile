@@ -1,0 +1,11 @@
+--- Makefile
++++ Makefile
+@@ -4,6 +4,8 @@ include $(TOPDIR)/Make.version
+ include $(TOPDIR)/Make.rules
+ include $(TOPDIR)/Make.defaults
+ 
++unexport MAKEFLAGS
++
+ SUBDIRS := src docs
+ 
+ all : | efivar.spec Make.version

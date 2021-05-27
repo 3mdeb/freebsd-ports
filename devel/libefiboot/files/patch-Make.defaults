@@ -1,0 +1,18 @@
+--- Make.defaults
++++ Make.defaults
+@@ -1,5 +1,5 @@
+ prefix	?= /usr/
+-libdir	?= $(prefix)/lib64/
++libdir	?= $(prefix)/local/lib/
+ datadir	?= $(prefix)/share/
+ mandir	?= $(datadir)/man/
+ includedir ?= $(prefix)/include/
+@@ -17,7 +17,7 @@ CFLAGS	?= $(OPTIMIZE) -g3
+ CFLAGS	:= $(CFLAGS)
+ LDFLAGS ?=
+ LDFLAGS := $(LDFLAGS)
+-AR	:= $(CROSS_COMPILE)gcc-ar
++AR	:= $(CROSS_COMPILE)ar
+ NM	:= $(CROSS_COMPILE)gcc-nm
+ RANLIB	:= $(CROSS_COMPILE)gcc-ranlib
+ 

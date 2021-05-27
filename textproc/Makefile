@@ -366,6 +366,7 @@
     SUBDIR += libfo
     SUBDIR += libfolia
     SUBDIR += libgepub
+    SUBDIR += libjcat
     SUBDIR += libkmfl
     SUBDIR += libkolabxml
     SUBDIR += libkomparediff2
@@ -398,6 +399,7 @@
     SUBDIR += libxdiff
     SUBDIR += libxml++26
     SUBDIR += libxml2
+    SUBDIR += libxmlb
     SUBDIR += libxmlbird
     SUBDIR += libxode
     SUBDIR += libxslt

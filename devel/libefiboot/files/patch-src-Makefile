@@ -1,0 +1,35 @@
+--- src/Makefile
++++ src/Makefile
+@@ -12,7 +12,8 @@ PCTARGETS=efivar.pc efiboot.pc
+ TARGETS=$(LIBTARGETS) $(STATICLIBTARGETS) $(BINTARGETS) $(PCTARGETS)
+ 
+ LIBEFIBOOT_SOURCES = crc32.c creator.c disk.c gpt.c linux.c loadopt.c
+-LIBEFIBOOT_OBJECTS = $(patsubst %.c,%.o,$(LIBEFIBOOT_SOURCES))
++LIBEFIBOOT_OBJECTS = $(patsubst %.c,%.o,$(LIBEFIBOOT_SOURCES)) \
++	$(LIBEFIVAR_OBJECTS)
+ LIBEFIVAR_SOURCES = dp.c dp-acpi.c dp-hw.c dp-media.c dp-message.c \
+ 	efivarfs.c export.c guid.c guids.S guid-symbols.c \
+ 	lib.c vars.c
+@@ -52,19 +53,19 @@ libefivar.so : LIBS=dl
+ libefivar.so : MAP=libefivar.map
+ 
+ efivar : efivar.c | libefivar.so
+-efivar : LIBS=efivar dl
++efivar : LIBS=efivar dl intl
+ efivar : PKGS=popt
+ 
+ efivar-static : efivar.c $(patsubst %.o,%.static.o,$(LIBEFIVAR_OBJECTS))
+ efivar-static : | $(GENERATED_SOURCES)
+-efivar-static : LIBS=dl
++efivar-static : LIBS=dl intl
+ efivar-static : PKGS=popt
+ 
+ libefiboot.a : $(patsubst %.o,%.static.o,$(LIBEFIBOOT_OBJECTS))
+ 
+ libefiboot.so : $(LIBEFIBOOT_OBJECTS)
+ libefiboot.so : | libefiboot.map libefivar.so
+-libefiboot.so : LIBS=efivar
++libefiboot.so : LIBS=dl
+ libefiboot.so : MAP=libefiboot.map
+ 
+ deps : $(ALL_SOURCES)

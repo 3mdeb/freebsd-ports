@@ -1,0 +1,2 @@
+libdata/pkgconfig/fwupd-efi.pc
+libexec/fwupd/efi/fwupdx64.efi

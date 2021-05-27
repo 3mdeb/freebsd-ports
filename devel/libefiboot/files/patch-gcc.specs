@@ -1,0 +1,17 @@
+--- gcc.specs
++++ gcc.specs
+@@ -2,7 +2,7 @@
+ + -D_GNU_SOURCE
+ 
+ *efivar_cpp_options:
+- -Werror -Wall -std=gnu11 -Wextra
++ -Werror -Wall -std=gnu11 -Wextra -Wno-error=duplicate-decl-specifier -Wno-error=address-of-packed-member -Wno-error=stringop-overflow
+ 
+ *cpp_options:
+ + %(efivar_cpp_options)
+@@ -14,4 +14,4 @@
+ + %{!shared:%{!static:%{!r:-pie}}} %{static:-Wl,-no-fatal-warnings -Wl,-static -static -Wl,-z,relro,-z,now}
+ 
+ *link:
+-+ %{!static:--fatal-warnings} --no-undefined-version --no-allow-shlib-undefined --add-needed -z now --build-id %{!static:%{!shared:-PIE}} %{shared:-z relro -PIC} %{static:%<pie}
+++ %{!static:--fatal-warnings} --no-undefined-version --add-needed -z now --build-id %{!static:%{!shared:-PIE}} %{shared:-z relro -PIC} %{static:%<pie}
