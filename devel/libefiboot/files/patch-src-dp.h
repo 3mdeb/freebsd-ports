@@ -1,4 +1,4 @@
---- src/dp.h
+--- src/dp.h.orig	2016-06-30 14:50:32 UTC
 +++ src/dp.h
 @@ -20,7 +20,6 @@
  #ifndef _EFIVAR_INTERNAL_DP_H

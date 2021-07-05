@@ -1,4 +1,4 @@
---- src/gpt.c
+--- src/gpt.c.orig	2016-06-30 14:50:32 UTC
 +++ src/gpt.c
 @@ -22,7 +22,6 @@
   *

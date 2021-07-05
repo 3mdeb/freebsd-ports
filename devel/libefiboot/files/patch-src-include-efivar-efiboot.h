@@ -1,4 +1,4 @@
---- src/include/efivar/efiboot.h
+--- src/include/efivar/efiboot.h.orig	2016-06-30 14:50:32 UTC
 +++ src/include/efivar/efiboot.h
 @@ -25,12 +25,13 @@
  #include <stdarg.h>

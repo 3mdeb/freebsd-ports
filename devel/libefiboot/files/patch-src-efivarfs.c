@@ -1,4 +1,4 @@
---- src/efivarfs.c
+--- src/efivarfs.c.orig	2016-06-30 14:50:32 UTC
 +++ src/efivarfs.c
 @@ -20,23 +20,20 @@
  

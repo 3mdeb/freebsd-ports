@@ -1,4 +1,4 @@
---- Make.defaults
+--- Make.defaults.orig	2016-06-30 14:50:32 UTC
 +++ Make.defaults
 @@ -1,5 +1,5 @@
  prefix	?= /usr/
@@ -7,9 +7,12 @@
  datadir	?= $(prefix)/share/
  mandir	?= $(datadir)/man/
  includedir ?= $(prefix)/include/
-@@ -17,7 +17,7 @@ CFLAGS	?= $(OPTIMIZE) -g3
+@@ -15,9 +15,9 @@ CCLD	:= $(if $(filter undefined,$(origin CCLD)),$(CC),
+ OPTIMIZE ?= -O2
+ CFLAGS	?= $(OPTIMIZE) -g3
  CFLAGS	:= $(CFLAGS)
- LDFLAGS ?=
+-LDFLAGS ?=
++LDFLAGS ?= -g
  LDFLAGS := $(LDFLAGS)
 -AR	:= $(CROSS_COMPILE)gcc-ar
 +AR	:= $(CROSS_COMPILE)ar

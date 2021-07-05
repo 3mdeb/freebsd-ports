@@ -1,4 +1,4 @@
---- Makefile
+--- Makefile.orig	2016-06-30 14:50:32 UTC
 +++ Makefile
 @@ -4,6 +4,8 @@ include $(TOPDIR)/Make.version
  include $(TOPDIR)/Make.rules

@@ -1,4 +1,4 @@
---- src/creator.c
+--- src/creator.c.orig	2016-06-30 14:50:32 UTC
 +++ src/creator.c
 @@ -21,12 +21,11 @@
  #include <fcntl.h>
@@ -212,12 +212,79 @@
  static int
  __attribute__((__nonnull__ (1,2,3)))
  find_file(const char * const filepath, char **devicep, char **relpathp)
-@@ -129,7 +319,7 @@ find_file(const char * const filepath, char **devicep, char **relpathp)
+@@ -79,19 +269,13 @@ find_file(const char * const filepath, char **devicep,
+ 
+ 	mounts = fopen("/proc/self/mounts", "r");
+ 	if (mounts == NULL)
+-		return rc;
++		return -1;
+ 
+ 	struct mntent *me;
+-	while (1) {
++	while ((me = getmntent(mounts))) {
+ 		struct stat dsb = { 0, };
+ 
+ 		errno = 0;
+-		me = getmntent(mounts);
+-		if (!me) {
+-			if (feof(mounts))
+-				errno = ENOENT;
+-			goto err;
+-		}
+ 
+ 		if (me->mnt_fsname[0] != '/')
+ 			continue;
+@@ -100,12 +284,8 @@ find_file(const char * const filepath, char **devicep,
+ 		if (rc < 0) {
+ 			if (errno == ENOENT)
+ 				continue;
+-			goto err;
+ 		}
+ 
+-		if (!S_ISBLK(dsb.st_mode))
+-			continue;
+-
+ 		if (dsb.st_rdev == fsb.st_dev) {
+ 			ssize_t mntlen = strlen(me->mnt_dir);
+ 			if (mntlen >= linklen) {
+@@ -124,12 +304,10 @@ find_file(const char * const filepath, char **devicep,
+ 				goto err;
+ 			}
+ 			ret = 0;
+-			break;
+ 		}
  	}
  err:
- 	if (mounts)
+-	if (mounts)
 -		endmntent(mounts);
-+		(void)endmntent(mounts);
++	(void)fclose(mounts);
  	return ret;
  }
  
+@@ -211,12 +389,22 @@ efi_va_generate_file_device_path_from_esp(uint8_t *buf
+ 	if (!(options & EFIBOOT_ABBREV_FILE)) {
+ 		int disk_fd;
+ 		int saved_errno;
+-		int rc;
+ 
+-		rc = set_disk_and_part_name(&info);
+-		if (rc < 0)
+-			goto err;
++		info.disk_name = strdup(devpath);
++		info.disk_name = strrchr(info.disk_name, '/');
++		if (!info.disk_name) {
++			errno = EINVAL;
++			return -1;
++		}
++		info.disk_name++;
+ 
++		info.part_name = malloc(PATH_MAX+1);
++		if (!strncmp (info.disk_name, "nv", 2)) {
++			sprintf(info.part_name, "%sp%d", info.disk_name, info.part);
++		} else {
++			sprintf(info.part_name, "%s%d", info.disk_name, info.part);
++		}
++				
+ 		disk_fd = open_disk(&info,
+ 		    (options& EFIBOOT_OPTIONS_WRITE_SIGNATURE)?O_RDWR:O_RDONLY);
+ 		if (disk_fd < 0)
