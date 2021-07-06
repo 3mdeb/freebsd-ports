@@ -65,20 +65,34 @@
  	if (rc != 1)
  		return -1;
  	return ret;
-@@ -163,37 +155,41 @@ find_parent_devpath(const char * const child, char **p
+@@ -161,39 +153,26 @@ int
+ __attribute__((__visibility__ ("hidden")))
+ find_parent_devpath(const char * const child, char **parent)
  {
- 	int ret;
- 	char *node;
+-	int ret;
+-	char *node;
 -	char *linkbuf;
-+	char *last;
-+	char save;
++	int i;
  
- 	/* strip leading /dev/ */
- 	node = strrchr(child, '/');
- 	if (!node)
+-	/* strip leading /dev/ */
+-	node = strrchr(child, '/');
+-	if (!node)
++	/* strip partition number */
++	for (i = 0; child[i] != '\n'; ++i)
++		if (isdigit(child[i]))
++			break;
++	
++	if (child[i] == '\0') 
  		return -1;
- 	node++;
--
+-	node++;
++	
++	/* nvme devices have a number before partnum */
++	/* are there any other such devices ? */
++	if (strstr(child, "nv"))
++		i++;
++	
++	*parent = strndup(child, i);
+ 
 -	/* look up full path symlink */
 -	ret = sysfs_readlink(&linkbuf, "/sys/class/block/%s", node);
 -	if (ret < 0)
@@ -87,25 +101,10 @@
 -	/* strip child */
 -	node = strrchr(linkbuf, '/');
 -	if (!node)
-+	
-+	/* strip partition number */
-+	last = node;
-+	while (*last++ != '\0') 
-+		if (isdigit(*last))
-+			break;
-+	
-+	if (*last == '\0') 
++	if (*parent == NULL)
  		return -1;
 -	*node = '\0';
-+	
-+	/* nvme devices have a number before partnum */
-+	/* are there any other such devices ? */
-+	if (strstr(node, "nv"))
-+		last++;
-+	
-+	/* back up original child */
-+	save = *last;
- 
+-
 -	/* read parent */
 -	node = strrchr(linkbuf, '/');
 -	if (!node)
@@ -113,20 +112,16 @@
 -	*node = '\0';
 -	node++;
 -
- 	/* write out new path */
-+	*last = '\0';
- 	ret = asprintf(parent, "/dev/%s", node);
-+
-+	/* restore original child */
-+	*last = save;
-+
- 	if (ret < 0)
- 		return ret;
+-	/* write out new path */
+-	ret = asprintf(parent, "/dev/%s", node);
+-	if (ret < 0)
+-		return ret;
 -
++	
  	return 0;
  }
  
-@@ -886,16 +882,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
+@@ -886,16 +865,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
  		perror("stat");
  		return 1;
  	}
@@ -145,7 +140,7 @@
  
  	/* IDE disks can have up to 64 partitions, or 6 bits worth,
  	 * and have one bit for the disk number.
-@@ -962,7 +950,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
+@@ -962,7 +933,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
  	}
  
  	errno = ENOSYS;
@@ -155,7 +150,7 @@
  }
  
  static ssize_t
-@@ -1000,6 +989,13 @@ ssize_t
+@@ -1000,6 +972,13 @@ ssize_t
  __attribute__((__visibility__ ("hidden")))
  make_mac_path(uint8_t *buf, ssize_t size, const char * const ifname)
  {
@@ -169,7 +164,7 @@
  	struct ifreq ifr;
  	struct ethtool_drvinfo drvinfo = { 0, };
  	int fd, rc;
-@@ -1042,4 +1038,5 @@ err:
+@@ -1042,4 +1021,5 @@ err:
  	if (fd >= 0)
  		close(fd);
  	return ret;

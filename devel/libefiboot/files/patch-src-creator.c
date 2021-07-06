@@ -291,3 +291,12 @@
  		disk_fd = open_disk(&info,
  		    (options& EFIBOOT_OPTIONS_WRITE_SIGNATURE)?O_RDWR:O_RDONLY);
  		if (disk_fd < 0)
+@@ -323,7 +511,7 @@ err:
+ 	if (child_devpath)
+ 		free(child_devpath);
+ 	if (parent_devpath)
+-			free(parent_devpath);
++		free(parent_devpath);
+ 	if (relpath)
+ 		free(relpath);
+ 	errno = saved_errno;
