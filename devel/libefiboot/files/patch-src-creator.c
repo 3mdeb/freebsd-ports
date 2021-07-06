@@ -212,9 +212,12 @@
  static int
  __attribute__((__nonnull__ (1,2,3)))
  find_file(const char * const filepath, char **devicep, char **relpathp)
-@@ -79,19 +269,13 @@ find_file(const char * const filepath, char **devicep,
+@@ -77,21 +267,15 @@ find_file(const char * const filepath, char **devicep,
+ 		}
+ 	} while (1);
  
- 	mounts = fopen("/proc/self/mounts", "r");
+-	mounts = fopen("/proc/self/mounts", "r");
++	mounts = fopen("/compat/linux/proc/self/mounts", "r");
  	if (mounts == NULL)
 -		return rc;
 +		return -1;
