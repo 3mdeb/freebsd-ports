@@ -273,13 +273,13 @@
 -		rc = set_disk_and_part_name(&info);
 -		if (rc < 0)
 -			goto err;
-+		info.disk_name = strdup(devpath);
-+		info.disk_name = strrchr(info.disk_name, '/');
-+		if (!info.disk_name) {
++		char *node = strrchr(devpath, '/');
++		if (!node) {
 +			errno = EINVAL;
 +			return -1;
 +		}
-+		info.disk_name++;
++		node++;
++		info.disk_name = strdup(node);
  
 +		info.part_name = malloc(PATH_MAX+1);
 +		if (!strncmp (info.disk_name, "nv", 2)) {
