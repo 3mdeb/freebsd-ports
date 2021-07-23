@@ -65,7 +65,7 @@
  	if (rc != 1)
  		return -1;
  	return ret;
-@@ -161,39 +153,25 @@ int
+@@ -161,39 +153,27 @@ int
  __attribute__((__visibility__ ("hidden")))
  find_parent_devpath(const char * const child, char **parent)
  {
@@ -73,6 +73,7 @@
 -	char *node;
 -	char *linkbuf;
 +	int i;
++	char *separator;
  
 -	/* strip leading /dev/ */
 -	node = strrchr(child, '/');
@@ -87,8 +88,9 @@
 -	node++;
 +	
 +	/* handle e.g. nvd0p1 */
-+	if (child[i+1] == 'p')
-+		i++;
++	separator = strrchr(child+i, 'p');
++	if (separator)
++		i = separator - child;
 +	
 +	*parent = strndup(child, i);
  
@@ -120,7 +122,7 @@
  	return 0;
  }
  
-@@ -886,16 +864,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
+@@ -886,16 +866,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
  		perror("stat");
  		return 1;
  	}
@@ -139,7 +141,7 @@
  
  	/* IDE disks can have up to 64 partitions, or 6 bits worth,
  	 * and have one bit for the disk number.
-@@ -962,7 +932,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
+@@ -962,7 +934,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
  	}
  
  	errno = ENOSYS;
@@ -149,7 +151,7 @@
  }
  
  static ssize_t
-@@ -1000,6 +971,13 @@ ssize_t
+@@ -1000,6 +973,13 @@ ssize_t
  __attribute__((__visibility__ ("hidden")))
  make_mac_path(uint8_t *buf, ssize_t size, const char * const ifname)
  {
@@ -163,7 +165,7 @@
  	struct ifreq ifr;
  	struct ethtool_drvinfo drvinfo = { 0, };
  	int fd, rc;
-@@ -1042,4 +1020,5 @@ err:
+@@ -1042,4 +1022,5 @@ err:
  	if (fd >= 0)
  		close(fd);
  	return ret;
