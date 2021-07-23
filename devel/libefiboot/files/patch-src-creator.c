@@ -1,8 +1,10 @@
 --- src/creator.c.orig	2016-06-30 14:50:32 UTC
 +++ src/creator.c
-@@ -21,12 +21,11 @@
+@@ -20,13 +20,13 @@
+ 
  #include <fcntl.h>
  #include <inttypes.h>
++#include <ctype.h>
  #include <limits.h>
 -#include <mntent.h>
 +#include <sys/types.h>
@@ -14,7 +16,7 @@
  #include <sys/stat.h>
  #include <sys/socket.h>
  
-@@ -39,6 +38,197 @@
+@@ -39,6 +39,197 @@
  #include "list.h"
  #include "util.h"
  
@@ -212,7 +214,7 @@
  static int
  __attribute__((__nonnull__ (1,2,3)))
  find_file(const char * const filepath, char **devicep, char **relpathp)
-@@ -77,21 +267,15 @@ find_file(const char * const filepath, char **devicep,
+@@ -77,21 +268,15 @@ find_file(const char * const filepath, char **devicep,
  		}
  	} while (1);
  
@@ -237,7 +239,7 @@
  
  		if (me->mnt_fsname[0] != '/')
  			continue;
-@@ -100,12 +284,8 @@ find_file(const char * const filepath, char **devicep,
+@@ -100,12 +285,8 @@ find_file(const char * const filepath, char **devicep,
  		if (rc < 0) {
  			if (errno == ENOENT)
  				continue;
@@ -250,7 +252,7 @@
  		if (dsb.st_rdev == fsb.st_dev) {
  			ssize_t mntlen = strlen(me->mnt_dir);
  			if (mntlen >= linklen) {
-@@ -124,12 +304,10 @@ find_file(const char * const filepath, char **devicep,
+@@ -124,12 +305,10 @@ find_file(const char * const filepath, char **devicep,
  				goto err;
  			}
  			ret = 0;
@@ -264,7 +266,7 @@
  	return ret;
  }
  
-@@ -211,12 +389,22 @@ efi_va_generate_file_device_path_from_esp(uint8_t *buf
+@@ -211,12 +390,23 @@ efi_va_generate_file_device_path_from_esp(uint8_t *buf
  	if (!(options & EFIBOOT_ABBREV_FILE)) {
  		int disk_fd;
  		int saved_errno;
@@ -282,7 +284,8 @@
 +		info.disk_name = strdup(node);
  
 +		info.part_name = malloc(PATH_MAX+1);
-+		if (!strncmp (info.disk_name, "nv", 2)) {
++		// Handle e.g. nvd0p1, da0p1
++		if (isdigit(info.disk_name[strlen(info.disk_name)-1])) {
 +			sprintf(info.part_name, "%sp%d", info.disk_name, info.part);
 +		} else {
 +			sprintf(info.part_name, "%s%d", info.disk_name, info.part);
@@ -291,7 +294,7 @@
  		disk_fd = open_disk(&info,
  		    (options& EFIBOOT_OPTIONS_WRITE_SIGNATURE)?O_RDWR:O_RDONLY);
  		if (disk_fd < 0)
-@@ -323,7 +511,7 @@ err:
+@@ -323,7 +513,7 @@ err:
  	if (child_devpath)
  		free(child_devpath);
  	if (parent_devpath)

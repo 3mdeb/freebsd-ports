@@ -65,7 +65,7 @@
  	if (rc != 1)
  		return -1;
  	return ret;
-@@ -161,39 +153,26 @@ int
+@@ -161,39 +153,25 @@ int
  __attribute__((__visibility__ ("hidden")))
  find_parent_devpath(const char * const child, char **parent)
  {
@@ -77,7 +77,7 @@
 -	/* strip leading /dev/ */
 -	node = strrchr(child, '/');
 -	if (!node)
-+	/* strip partition number */
++	/* find the first number */
 +	for (i = 0; child[i] != '\n'; ++i)
 +		if (isdigit(child[i]))
 +			break;
@@ -86,9 +86,8 @@
  		return -1;
 -	node++;
 +	
-+	/* nvme devices have a number before partnum */
-+	/* are there any other such devices ? */
-+	if (strstr(child, "nv"))
++	/* handle e.g. nvd0p1 */
++	if (child[i+1] == 'p')
 +		i++;
 +	
 +	*parent = strndup(child, i);
@@ -121,7 +120,7 @@
  	return 0;
  }
  
-@@ -886,16 +865,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
+@@ -886,16 +864,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
  		perror("stat");
  		return 1;
  	}
@@ -140,7 +139,7 @@
  
  	/* IDE disks can have up to 64 partitions, or 6 bits worth,
  	 * and have one bit for the disk number.
-@@ -962,7 +933,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
+@@ -962,7 +932,8 @@ eb_disk_info_from_fd(int fd, struct disk_info *info)
  	}
  
  	errno = ENOSYS;
@@ -150,7 +149,7 @@
  }
  
  static ssize_t
-@@ -1000,6 +972,13 @@ ssize_t
+@@ -1000,6 +971,13 @@ ssize_t
  __attribute__((__visibility__ ("hidden")))
  make_mac_path(uint8_t *buf, ssize_t size, const char * const ifname)
  {
@@ -164,7 +163,7 @@
  	struct ifreq ifr;
  	struct ethtool_drvinfo drvinfo = { 0, };
  	int fd, rc;
-@@ -1042,4 +1021,5 @@ err:
+@@ -1042,4 +1020,5 @@ err:
  	if (fd >= 0)
  		close(fd);
  	return ret;
