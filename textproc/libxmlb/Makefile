@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libxmlb
-DISTVERSION=	0.3.2
+DISTVERSION=	0.3.6
 CATEGORIES=	textproc
 
 MAINTAINER=	norbert.kaminski@3mdeb.com
@@ -17,9 +17,5 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hughsie
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
-
-OPTIONS_DEFINE=	DOCS
-
-DOCS_MESON_TRUE=	docs
 
 .include <bsd.port.mk>
