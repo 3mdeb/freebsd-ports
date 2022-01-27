@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fwupd
-DISTVERSION=	1.6.1
-GH_TAGNAME=	37a0448a
+DISTVERSION=	1.7.5
+GH_TAGNAME=	38bab8f
 CATEGORIES=	sysutils
 
 MAINTAINER=	norbert.kaminski@3mdeb.com
@@ -17,8 +17,6 @@ BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc \
 		${LOCALBASE}/libexec/fwupd/efi/fwupdx64.efi:sysutils/fwupd-efi \
 		${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR}
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libefiboot.so:devel/libefiboot \
-		libelf.so:devel/libelf \
 		libgcab-1.0.so:archivers/gcab \
 		libgnutls.so:security/gnutls \
 		libgpg-error.so:security/libgpg-error \
@@ -26,33 +24,40 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgusb.so:devel/libgusb \
 		libjcat.so:textproc/libjcat \
 		libjson-glib-1.0.so:devel/json-glib \
+		libprotobuf-c.so:devel/protobuf-c \
 		libxmlb.so:textproc/libxmlb \
-		libefiboot.so:devel/gnu-efi
+		libefivar.so:devel/efivar
 
-RUN_DEPENDS=	${LOCALBASE}/libexec/fwupd/efi/fwupdx64.efi:sysutils/fwupd-efi
 
-USES=		gnome libarchive meson pkgconfig python:3.7+ shebangfix sqlite
+USES=		gnome libarchive meson pkgconfig python:3.8+ shebangfix sqlite
 USE_GITHUB=	yes
 USE_GNOME=	glib20 introspection:build
+GH_ACCOUNT=
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 
 SHEBANG_GLOB=	*.py
 
 MESON_ARGS=	-Dgudev=false \
-		-Dplugin_altos=false \
 		-Dplugin_amt=false \
 		-Dplugin_dell=false \
 		-Dplugin_emmc=false \
 		-Dplugin_nvme=false \
+		-Dplugin_parade_lspcon=false \
 		-Dplugin_redfish=false \
 		-Dplugin_synaptics_mst=false \
 		-Dplugin_synaptics_rmi=false \
+		-Dplugin_realtek_mst=false \
 		-Dplugin_thunderbolt=false \
 		-Dplugin_tpm=false \
+		-Dplugin_bcm57xx=false \
+		-Dplugin_ep963x=false \
+		-Dplugin_uefi_capsule=false \
 		-Dpolkit=false \
 		-Dsystemd=false \
+		-Doffline=false \
 		-Dtests=false \
+		-Ddocs=gtkdoc \
 		-Defi_binary=false
 
 .include <bsd.port.mk>
