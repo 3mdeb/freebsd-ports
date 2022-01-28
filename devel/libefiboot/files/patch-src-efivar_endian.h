@@ -1,4 +1,4 @@
---- src/efivar_endian.h
+--- src/efivar_endian.h.orig	2016-06-30 14:50:32 UTC
 +++ src/efivar_endian.h
 @@ -20,7 +20,7 @@
  #ifndef _EFIVAR_ENDIAN_H

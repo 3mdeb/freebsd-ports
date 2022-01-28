@@ -1,4 +1,4 @@
---- src/efivar.c
+--- src/efivar.c.orig	2016-06-30 14:50:32 UTC
 +++ src/efivar.c
 @@ -63,7 +63,7 @@ list_all_variables(void)
  	int rc;
@@ -18,7 +18,7 @@
  		       guid.e[0], guid.e[1], guid.e[2], guid.e[3],
  		       guid.e[4], guid.e[5]);
  		printf("Name: \"%s\"\n", name);
-@@ -280,7 +280,7 @@ prepare_data(const char *filename, void **data, size_t *data_size)
+@@ -280,7 +280,7 @@ prepare_data(const char *filename, void **data, size_t
  		goto err;
  
  	buflen = statbuf.st_size;

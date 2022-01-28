@@ -1,4 +1,4 @@
---- src/include/efivar/efivar.h
+--- src/include/efivar/efivar.h.orig	2016-06-30 14:50:32 UTC
 +++ src/include/efivar/efivar.h
 @@ -20,15 +20,14 @@
  #ifndef EFIVAR_H

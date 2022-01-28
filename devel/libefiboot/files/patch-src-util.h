@@ -1,6 +1,6 @@
---- src/util.h
+--- src/util.h.orig	2016-06-30 14:50:32 UTC
 +++ src/util.h
-@@ -125,14 +125,34 @@ static inline int
+@@ -125,13 +125,33 @@ static inline int
  __attribute__((unused))
  get_sector_size(int filedes)
  {
@@ -17,7 +17,7 @@
 +	return 512;
 +#endif
  }
- 
++
 +#define strdupa(str)							\
 +	({								\
 +		char *_tmp = NULL;					\
@@ -31,7 +31,6 @@
 +		asprintf(&_tmp, "%.*s", (int)(len), (str));		\
 +	 	_tmp;							\
 +	})
-+
+ 
  #define asprintfa(str, fmt, args...)					\
  	({								\
- 		char *_tmp = NULL;					\

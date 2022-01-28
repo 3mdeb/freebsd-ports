@@ -1,4 +1,4 @@
---- src/makeguids.c
+--- src/makeguids.c.orig	2016-06-30 14:50:32 UTC
 +++ src/makeguids.c
 @@ -150,18 +150,18 @@ main(int argc, char *argv[])
  	fprintf(header, "#ifndef EFIVAR_GUIDS_H\n#define EFIVAR_GUIDS_H 1\n\n");

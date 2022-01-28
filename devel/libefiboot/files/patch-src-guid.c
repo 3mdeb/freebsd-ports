@@ -1,4 +1,4 @@
---- src/guid.c
+--- src/guid.c.orig	2016-06-30 14:50:32 UTC
 +++ src/guid.c
 @@ -21,6 +21,7 @@
  #include <dlfcn.h>
