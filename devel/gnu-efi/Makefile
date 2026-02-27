@@ -26,7 +26,10 @@ PLIST_SUB+=	ARCH_amd64="" ARCH_i386="@comment "
 PLIST_SUB+=	ARCH_i386="" ARCH_amd64="@comment "
 .endif
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.o
+# This port installs object files as lib/*.o.  Previously it stripped those
+# objects, but it MUST NOT be done.  Stripping removes all symbols from CRTs
+# and breaks applications linked against gnu-efi (everything builds, but
+# resulting file is not a valid PE executable due to the way objcopy
+# operates).
 
 .include <bsd.port.post.mk>
