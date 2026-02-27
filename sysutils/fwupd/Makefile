@@ -21,7 +21,6 @@ BUILD_DEPENDS=	blkid:filesystems/libblkid \
 LIB_DEPENDS=	libcbor.so:devel/libcbor \
 		libcurl.so:ftp/curl \
 		libdrm.so:graphics/libdrm \
-		libefiboot.so:devel/efivar \
 		libelf.so:devel/libelf \
 		libgcab-1.0.so:archivers/gcab \
 		libgnutls.so:security/gnutls \
