@@ -35,6 +35,7 @@ LIB_DEPENDS=	libcbor.so:devel/libcbor \
 		libprotobuf-c.so:devel/protobuf-c \
 		libxmlb.so:textproc/libxmlb
 RUN_DEPENDS=	blkid:filesystems/libblkid \
+		bsdisks:sysutils/bsdisks \
 		dbus-daemon:devel/dbus \
 		flashrom>0:sysutils/flashrom \
 		${LOCALBASE}/libdata/pkgconfig/fwupd-efi.pc:sysutils/fwupd-efi \
