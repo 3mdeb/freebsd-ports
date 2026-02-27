@@ -9,6 +9,9 @@ LICENSE=	LGPL21
 
 BROKEN_FreeBSD_13=	requires at least FreeBSD 14
 
+CONFLICTS_BUILD=	efivar
+CONFLICTS_INSTALL=	efivar
+
 BUILD_DEPENDS=	blkid:filesystems/libblkid \
 		flashrom>0:sysutils/flashrom \
 		help2man:misc/help2man \
